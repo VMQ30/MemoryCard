@@ -1,10 +1,9 @@
 import "../styles/Difficulty.css";
 
 export function Difficulty({ gameDifficulty, setGameDifficulty }) {
-  console.log("hi");
   return (
     <div className="difficulty-selector">
-      <h3>SELECT DIFFICULTY</h3>
+      <h3>Select Difficulty</h3>
 
       <div className="difficulty-choices-wrapper">
         <label>
@@ -13,7 +12,8 @@ export function Difficulty({ gameDifficulty, setGameDifficulty }) {
             className="difficulty-choices"
             name="difficulty"
             value="easy"
-            checked
+            checked={gameDifficulty === "Easy"}
+            onClick={() => setGameDifficulty((diff) => (diff = "Easy"))}
           />
           <span className="choice-indicator">▶</span>Easy
         </label>
@@ -24,6 +24,8 @@ export function Difficulty({ gameDifficulty, setGameDifficulty }) {
             className="difficulty-choices"
             name="difficulty"
             value="medium"
+            checked={gameDifficulty === "Medium"}
+            onClick={() => setGameDifficulty((diff) => (diff = "Medium"))}
           />
           <span className="choice-indicator">▶</span>Medium
         </label>
@@ -34,11 +36,13 @@ export function Difficulty({ gameDifficulty, setGameDifficulty }) {
             className="difficulty-choices"
             name="difficulty"
             value="hard"
+            checked={gameDifficulty === "Hard"}
+            onClick={() => setGameDifficulty((diff) => (diff = "Hard"))}
           />
           <span className="choice-indicator">▶</span>Hard
         </label>
       </div>
-      <button className="start-game">START GAME</button>
+      <button className="start-game">Start Game</button>
     </div>
   );
 }

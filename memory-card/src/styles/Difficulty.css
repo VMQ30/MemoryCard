@@ -2,13 +2,14 @@
   background-color: white;
   border: 40px solid transparent;
   border-image-source: url("../assets/dialog-box.png");
-  border-image-slice: 180 fill;
+  border-image-slice: 200 fill;
   border-image-repeat: stretch;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 40vw;
   height: 30vh;
+  padding: 10px;
 }
 
 .difficulty-choices-wrapper {
@@ -23,6 +24,7 @@ h3 {
   margin: 0;
   text-shadow: -3px 3px 0 #3466af;
   color: #ffcb05;
+  text-transform: uppercase;
 }
 
 label {
@@ -67,6 +69,7 @@ label {
   border: 2px solid #500303;
   transition: 0.3s ease;
   color: white;
+  text-transform: uppercase;
   cursor: url(../assets/cursor.png), pointer;
 }
 
