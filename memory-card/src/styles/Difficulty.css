@@ -1,0 +1,58 @@
+.difficulty-selector {
+  background-color: white;
+  border: 40px solid transparent;
+  border-image-source: url("../assets/dialog-box.png");
+  border-image-slice: 180 fill;
+  border-image-repeat: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 40vw;
+  height: 40vh;
+}
+
+.difficulty-choices-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+h3 {
+  font-family: "GameFont";
+  font-size: 2rem;
+  margin: 0;
+}
+
+label {
+  font-family: "GameFont";
+  font-size: 1rem;
+  cursor: url(../assets/cursor.png), pointer;
+}
+
+.difficulty-choices {
+  -webkit-appearance: none;
+  display: none;
+}
+
+.choice-indicator {
+  visibility: hidden;
+  margin-right: 5px;
+}
+
+.difficulty-choices:checked + .choice-indicator {
+  visibility: visible;
+  animation: blink 0.7s steps(1) infinite;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.start-game {
+  font-family: "GameFont";
+}
