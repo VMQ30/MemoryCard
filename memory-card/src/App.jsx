@@ -4,18 +4,24 @@ import { Difficulty } from "./components/Difficulty.jsx";
 import { Game } from "./components/Game.jsx";
 
 function App() {
-  const [gameDifficulty, setGameDifficulty] = useState("Easy");
+  const gameInfo = [
+    { difficulty: "Easy", numOfCards: 5 },
+    { difficulty: "Medium", numOfCards: 10 },
+    { difficulty: "Hard", numOfCards: 20 },
+  ];
+  const [gameDifficulty, setGameDifficulty] = useState(gameInfo[0]);
   const [modalIsOpen, setModalIsOpen] = useState(true);
   return (
     <main>
       <Difficulty
+        gameInfo={gameInfo}
         gameDifficulty={gameDifficulty}
         setGameDifficulty={setGameDifficulty}
         modalIsOpen={modalIsOpen}
         setModalIsOpen={setModalIsOpen}
       />
 
-      {!modalIsOpen && <Game />}
+      {!modalIsOpen && <Game gameDifficulty={gameDifficulty} />}
     </main>
   );
 }

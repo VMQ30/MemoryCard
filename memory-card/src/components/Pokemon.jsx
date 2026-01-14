@@ -1,27 +1,45 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-async function GetRawData(limit) {
+async function FetchData(limit) {
   try {
     const response = await fetch(
       `https://pokeapi.co/api/v2/pokemon/?limit=${limit}&offset=20`
     );
-    const data = await response.json();
-    return data;
+    let data = await response.json();
+    data = data.results;
+
+    const promises = data.map(async (data) => {
+      const response = await fetch(data.url);
+      const newData = await response.json();
+      return newData;
+    });
+
+    const finalData = await Promise.all(promises);
+    return finalData;
   } catch (error) {
     console.log(error);
-    return;
+    return [];
   }
 }
 
-function GetPokemonData(limit) {
+export function GetPokemonData(limit) {
+  const [pokemonList, setPokemonList] = useState([]);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
-    const fetchData = async () => {
-      const rawData = await GetRawData(limit);
-      const url = rawData.results[0].url;
-      const response = await fetch(url);
-      const data = await response.json();
-      console.log(data);
+    let isMounted = true;
+    setLoading(true);
+
+    FetchData(limit).then((data) => {
+      if (isMounted) {
+        setPokemonList(data);
+        setLoading(false);
+      }
+    });
+
+    return () => {
+      isMounted = false;
     };
-    fetchData();
-  }, []);
+  }, [limit]);
+
+  return { pokemonList, loading };
 }

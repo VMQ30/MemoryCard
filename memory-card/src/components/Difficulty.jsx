@@ -1,6 +1,7 @@
 import "../styles/Difficulty.css";
 
 export function Difficulty({
+  gameInfo,
   gameDifficulty,
   setGameDifficulty,
   modalIsOpen,
@@ -19,8 +20,8 @@ export function Difficulty({
                 className="difficulty-choices"
                 name="difficulty"
                 value="easy"
-                checked={gameDifficulty === "Easy"}
-                onChange={() => setGameDifficulty((diff) => (diff = "Easy"))}
+                checked={gameDifficulty.difficulty === "Easy"}
+                onChange={() => setGameDifficulty(gameInfo[0])}
               />
               <span className="choice-indicator">▶</span>Easy
             </label>
@@ -31,8 +32,8 @@ export function Difficulty({
                 className="difficulty-choices"
                 name="difficulty"
                 value="medium"
-                checked={gameDifficulty === "Medium"}
-                onChange={() => setGameDifficulty((diff) => (diff = "Medium"))}
+                checked={gameDifficulty.difficulty === "Medium"}
+                onChange={() => setGameDifficulty(gameInfo[1])}
               />
               <span className="choice-indicator">▶</span>Medium
             </label>
@@ -43,8 +44,8 @@ export function Difficulty({
                 className="difficulty-choices"
                 name="difficulty"
                 value="hard"
-                checked={gameDifficulty === "Hard"}
-                onChange={() => setGameDifficulty((diff) => (diff = "Hard"))}
+                checked={gameDifficulty.difficulty === "Hard"}
+                onChange={() => setGameDifficulty(gameInfo[2])}
               />
               <span className="choice-indicator">▶</span>Hard
             </label>

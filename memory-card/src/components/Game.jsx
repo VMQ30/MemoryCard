@@ -1,4 +1,6 @@
-export function Game() {
+import { GetPokemonData } from "./Pokemon";
+
+export function Game({ gameDifficulty }) {
   return (
     <main className="main-game">
       <div className="header">
@@ -6,7 +8,9 @@ export function Game() {
       </div>
 
       <div className="game-cards">
-        <div className="cards-wrapper"></div>
+        <div className="cards-wrapper">
+          <GetPokemonDetails limit={gameDifficulty.numOfCards} />
+        </div>
       </div>
       <div className="game-info">
         <h4>Score: </h4>
@@ -14,4 +18,9 @@ export function Game() {
       </div>
     </main>
   );
+}
+
+function GetPokemonDetails({ limit }) {
+  const pokemons = GetPokemonData(limit);
+  console.log(pokemons.pokemonList);
 }
