@@ -21,6 +21,46 @@ export function Game({ gameDifficulty }) {
 }
 
 function GetPokemonDetails({ limit }) {
-  const pokemons = GetPokemonData(limit);
-  console.log(pokemons.pokemonList);
+  const pokemonInfoRaw = GetPokemonData(limit);
+  const pokemonInfoCards = pokemonInfoRaw.pokemonList.map((pokemon) => {
+    return { ...pokemon, isPicked: false };
+  });
+  console.log(pokemonInfoCards);
+
+  return (
+    <>
+      {pokemonInfoCards.map((pokemon) => (
+        <RenderPokemonCard key={pokemon.id} pokemonInfoCards={pokemon} />
+      ))}
+    </>
+  );
+}
+
+function RenderPokemonCard({ pokemonInfoCards }) {
+  return (
+    <div className="cards">
+      <div className="header">
+        <h4>{pokemonInfoCards.name}</h4>
+        <h4>HP: {pokemonInfoCards.stats[0].base_stat}</h4>
+      </div>
+
+      <div className="card-body">
+        <img src={pokemonInfoCards.sprites.front_default} />
+        <div className="type">
+          <h4>
+            {pokemonInfoCards.types[0].type.name} Pokemon. Length:{" "}
+            {pokemonInfoCards.length} Weight: {pokemonInfoCards.weight}
+          </h4>
+        </div>
+        <div className="description">
+          <p>
+            {pokemonInfoCards.speciesInfo.flavor_text_entries[4].flavor_text.replace(
+              /[\f\n\r]/gm,
+              " "
+            )}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
 }

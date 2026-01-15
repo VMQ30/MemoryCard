@@ -10,12 +10,18 @@ async function FetchData(limit) {
 
     const promises = data.map(async (data) => {
       const response = await fetch(data.url);
-      const newData = await response.json();
-      return newData;
+      const basicData = await response.json();
+
+      const speciesResponse = await fetch(basicData.species.url);
+      const speciesData = await speciesResponse.json();
+
+      return {
+        ...basicData,
+        speciesInfo: speciesData,
+      };
     });
 
-    const finalData = await Promise.all(promises);
-    return finalData;
+    return await Promise.all(promises);
   } catch (error) {
     console.log(error);
     return [];
