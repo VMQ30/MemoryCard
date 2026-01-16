@@ -1,5 +1,7 @@
 import "../styles/Game.css";
 
+import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
+
 import { GetPokemonData } from "./Pokemon";
 
 export function Game({ gameDifficulty }) {
@@ -65,8 +67,35 @@ function GetPokemonDetails({ limit }) {
 }
 
 function RenderPokemonCard({ pokemonInfoCards }) {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const mouseXSpring = useSpring(x);
+  const mouseYSpring = useSpring(y);
+
+  const rotateX = useTransform(mouseYSpring, [-100, 100], [8, -8]);
+  const rotateY = useTransform(mouseXSpring, [-100, 100], [-8, 8]);
+
+  function handleHoverMouse(event) {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const mouseX = event.clientX - rect.left - rect.width / 2;
+    const mouseY = event.clientY - rect.top - rect.height / 2;
+    x.set(mouseX);
+    y.set(mouseY);
+  }
+
+  function handleMouseLeave() {
+    x.set(0);
+    y.set(0);
+  }
+
   return (
-    <div className="cards">
+    <motion.div
+      className="cards"
+      onMouseLeave={handleMouseLeave}
+      onMouseMove={handleHoverMouse}
+      style={{ rotateX, rotateY }}
+    >
       <div
         className="cards-info"
         data-type={pokemonInfoCards.types[0].type.name}
@@ -93,6 +122,6 @@ function RenderPokemonCard({ pokemonInfoCards }) {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

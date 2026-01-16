@@ -31,11 +31,18 @@ main {
   grid-template-columns: repeat(5, 1fr);
   gap: 20px;
   width: 100%;
+  perspective: 1000px;
 }
 
 .cards {
   background-color: #ffd700;
   border-radius: 5px;
+  transform-style: preserve-3d;
+  transition: box-shadow 0.2s ease;
+}
+
+.cards:hover {
+  cursor: url(../assets/cursor.png), pointer;
 }
 
 .cards-info {
