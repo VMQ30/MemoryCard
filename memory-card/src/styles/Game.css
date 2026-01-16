@@ -3,9 +3,27 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100vw;
+  width: 100%;
   padding: 40px;
   max-width: none;
+  min-height: 100vh;
+  width: 100%;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+main {
+  min-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.main-game {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .cards-wrapper {
@@ -22,20 +40,47 @@
 
 .cards-info {
   background-color: white;
+  background-image: url("../assets/texture.jpg");
+  background-size: cover;
+  background-blend-mode: overlay;
   margin: 10px;
   padding: 10px;
   height: calc(100% - 40px);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   h4 {
     margin: 0;
   }
 }
 
-.header {
+h1 {
+  font-family: "PokeFont";
+  color: #ffca00;
+  filter: url(#pokemonOutline);
+  margin: 0;
+  margin-bottom: 40px;
+  font-size: 4rem;
+}
+
+.cards-header {
   display: flex;
   justify-content: space-between;
+  font-family: "GameFont";
+  font-size: 0.8rem;
+}
+
+.type {
+  font-size: 0.6rem;
+  font-weight: 100;
+  display: flex;
+  justify-content: space-evenly;
+  background-color: #ffca00;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.description {
+  font-weight: 500;
 }
 
 .name,
@@ -44,5 +89,69 @@
 }
 
 img {
-  height: 40%;
+  image-rendering: pixelated;
+  width: 95%;
+  height: 150px;
+  object-fit: cover;
+  border: 5px solid #ffca00;
+  box-sizing: border-box;
+  margin-top: 5px;
+}
+
+.cards-info[data-type="normal"] {
+  background-color: #a8a77a;
+}
+.cards-info[data-type="flying"] {
+  background-color: #a98ff3;
+}
+.cards-info[data-type="bug"] {
+  background-color: #a6b91a;
+}
+
+.cards-info[data-type="fire"] {
+  background-color: #ee8130;
+}
+.cards-info[data-type="water"] {
+  background-color: #6390f0;
+}
+.cards-info[data-type="grass"] {
+  background-color: #7ac74c;
+}
+.cards-info[data-type="electric"] {
+  background-color: #fcd951;
+}
+.cards-info[data-type="ice"] {
+  background-color: #96d9d6;
+}
+
+.cards-info[data-type="fighting"] {
+  background-color: #c22e28;
+}
+.cards-info[data-type="poison"] {
+  background-color: #a33ea1;
+}
+.cards-info[data-type="ground"] {
+  background-color: #e2bf65;
+}
+.cards-info[data-type="rock"] {
+  background-color: #b6a136;
+}
+
+.cards-info[data-type="psychic"] {
+  background-color: #f95587;
+}
+.cards-info[data-type="ghost"] {
+  background-color: #735797;
+}
+.cards-info[data-type="dragon"] {
+  background-color: #6f35fc;
+}
+.cards-info[data-type="dark"] {
+  background-color: #705746;
+}
+.cards-info[data-type="steel"] {
+  background-color: #b7b7ce;
+}
+.cards-info[data-type="fairy"] {
+  background-color: #d685ad;
 }
