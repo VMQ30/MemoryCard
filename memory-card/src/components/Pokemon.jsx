@@ -35,6 +35,10 @@ export function GetPokemonData(limit) {
     let isMounted = true;
     setLoading(true);
 
+    if (loading) {
+      <RenderLoading />;
+    }
+
     FetchData(limit).then((data) => {
       if (isMounted) {
         setPokemonList(data);

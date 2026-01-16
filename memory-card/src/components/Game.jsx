@@ -44,15 +44,20 @@ export function Game({ gameDifficulty }) {
       </div>
       <div className="game-info">
         <h4>Score: </h4>
-        <h4>High Score: </h4>
+        <h4 className="high-score">High Score: </h4>
       </div>
     </main>
   );
 }
 
 function GetPokemonDetails({ limit }) {
-  const pokemonInfoRaw = GetPokemonData(limit);
-  const pokemonInfoCards = pokemonInfoRaw.pokemonList.map((pokemon) => {
+  const { pokemonList, loading } = GetPokemonData(limit);
+
+  if (loading) {
+    return <h1>Loading...</h1>;
+  }
+
+  const pokemonInfoCards = pokemonList.map((pokemon) => {
     return { ...pokemon, isPicked: false };
   });
   console.log(pokemonInfoCards);
@@ -82,14 +87,12 @@ function RenderPokemonCard({ pokemonInfoCards }) {
     const mouseX = event.clientX - rect.left;
     const mouseY = event.clientY - rect.top;
 
-    // % values for hologram
     const xPct = (mouseX / rect.width) * 100;
     const yPct = (mouseY / rect.height) * 100;
 
     event.currentTarget.style.setProperty("--x", `${xPct}%`);
     event.currentTarget.style.setProperty("--y", `${yPct}%`);
 
-    // center-based values for tilt
     x.set(mouseX - rect.width / 2);
     y.set(mouseY - rect.height / 2);
   }
@@ -104,12 +107,19 @@ function RenderPokemonCard({ pokemonInfoCards }) {
       className="cards"
       onMouseLeave={handleMouseLeave}
       onMouseMove={handleHoverMouse}
-      style={{ rotateX, rotateY }}
+      style={{
+        rotateX,
+        rotateY,
+        "--tilt-x": rotateX,
+        "--tilt-y": rotateY,
+      }}
     >
+      <div className="gold-layer" />
       <div
         className="cards-info"
         data-type={pokemonInfoCards.types[0].type.name}
       >
+        <div className="holo-lines" />
         <div className="holo-layer" />
         <div className="cards-header">
           <h4 className="name">{pokemonInfoCards.name}</h4>
