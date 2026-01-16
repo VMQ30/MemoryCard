@@ -78,10 +78,20 @@ function RenderPokemonCard({ pokemonInfoCards }) {
 
   function handleHoverMouse(event) {
     const rect = event.currentTarget.getBoundingClientRect();
-    const mouseX = event.clientX - rect.left - rect.width / 2;
-    const mouseY = event.clientY - rect.top - rect.height / 2;
-    x.set(mouseX);
-    y.set(mouseY);
+
+    const mouseX = event.clientX - rect.left;
+    const mouseY = event.clientY - rect.top;
+
+    // % values for hologram
+    const xPct = (mouseX / rect.width) * 100;
+    const yPct = (mouseY / rect.height) * 100;
+
+    event.currentTarget.style.setProperty("--x", `${xPct}%`);
+    event.currentTarget.style.setProperty("--y", `${yPct}%`);
+
+    // center-based values for tilt
+    x.set(mouseX - rect.width / 2);
+    y.set(mouseY - rect.height / 2);
   }
 
   function handleMouseLeave() {
@@ -100,6 +110,7 @@ function RenderPokemonCard({ pokemonInfoCards }) {
         className="cards-info"
         data-type={pokemonInfoCards.types[0].type.name}
       >
+        <div className="holo-layer" />
         <div className="cards-header">
           <h4 className="name">{pokemonInfoCards.name}</h4>
           <h4>HP:{pokemonInfoCards.stats[0].base_stat}</h4>
