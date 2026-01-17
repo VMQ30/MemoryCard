@@ -11,7 +11,7 @@ function App() {
   ];
   const [gameDifficulty, setGameDifficulty] = useState(gameInfo[0]);
   const [modalIsOpen, setModalIsOpen] = useState(true);
-  const [highScore, setHighScore] = useState(0);
+  const [highScore, setHighScore] = useState({ Easy: 0, Medium: 0, Hard: 0 });
   return (
     <main>
       <Difficulty

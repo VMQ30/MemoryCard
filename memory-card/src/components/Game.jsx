@@ -59,12 +59,15 @@ export function Game({
             highScore={highScore}
             setHighScore={setHighScore}
             setGameOver={setGameOver}
+            gameDifficulty={gameDifficulty}
           />
         </div>
       </div>
       <div className="game-info">
         <h4>Score: {score}</h4>
-        <h4 className="high-score">High Score: {highScore}</h4>
+        <h4 className="high-score">
+          High Score: {highScore[gameDifficulty.difficulty]}
+        </h4>
       </div>
     </main>
   );
@@ -77,6 +80,7 @@ function GetPokemonDetails({
   highScore,
   setHighScore,
   setGameOver,
+  gameDifficulty,
 }) {
   const { pokemonList, loading, setPokemonList } = GetPokemonData(limit);
 
@@ -102,6 +106,7 @@ function GetPokemonDetails({
           highScore={highScore}
           setHighScore={setHighScore}
           setGameOver={setGameOver}
+          gameDifficulty={gameDifficulty}
         />
       ))}
     </>
@@ -118,6 +123,7 @@ function RenderPokemonCard({
   highScore,
   setHighScore,
   setGameOver,
+  gameDifficulty,
 }) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -163,7 +169,8 @@ function RenderPokemonCard({
           setScore,
           highScore,
           setHighScore,
-          setGameOver
+          setGameOver,
+          gameDifficulty
         );
       }}
       style={{
@@ -214,14 +221,20 @@ function OnCardClick(
   setScore,
   highScore,
   setHighScore,
-  setGameOver
+  setGameOver,
+  gameDifficulty
 ) {
   if (pokemonList[index].isPicked === true) {
     setScore(0);
     setGameOver(true);
-    if (highScore < score) {
-      setHighScore(score);
+    const difficulty = gameDifficulty.difficulty;
+    if (score > highScore[difficulty]) {
+      setHighScore((prev) => ({
+        ...prev,
+        [difficulty]: score,
+      }));
     }
+    return;
   }
 
   setScore((prevScore) => prevScore + 1);
