@@ -14,6 +14,7 @@ export function Game({
 }) {
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
+  const [gameWin, setGameWin] = useState(false);
   const { pokemonList, loading, setPokemonList } = GetPokemonData(
     gameDifficulty.numOfCards,
   );
@@ -23,9 +24,18 @@ export function Game({
   }
 
   if (gameOver) {
-    return <RenderLostGame setModalIsOpen={setModalIsOpen} />;
+    return (
+      <RenderLostGame
+        setModalIsOpen={setModalIsOpen}
+        score={score}
+        setScore={setScore}
+      />
+    );
   }
 
+  if (gameWin) {
+    return <RenderWinGame setModalIsOpen={setModalIsOpen} />;
+  }
   return (
     <main className="main-game">
       <div className="header">
@@ -69,6 +79,7 @@ export function Game({
             gameDifficulty={gameDifficulty}
             pokemonList={pokemonList}
             setPokemonList={setPokemonList}
+            setGameWin={setGameWin}
           />
         </div>
       </div>
@@ -91,6 +102,7 @@ function GetPokemonDetails({
   gameDifficulty,
   pokemonList,
   setPokemonList,
+  setGameWin,
 }) {
   const pokemonInfoCards = pokemonList.map((pokemon) => {
     return { ...pokemon, isPicked: false };
@@ -111,6 +123,7 @@ function GetPokemonDetails({
           setHighScore={setHighScore}
           setGameOver={setGameOver}
           gameDifficulty={gameDifficulty}
+          setGameWin={setGameWin}
         />
       ))}
     </>
@@ -128,6 +141,7 @@ function RenderPokemonCard({
   setHighScore,
   setGameOver,
   gameDifficulty,
+  setGameWin,
 }) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -175,6 +189,7 @@ function RenderPokemonCard({
           setHighScore,
           setGameOver,
           gameDifficulty,
+          setGameWin,
         );
       }}
       style={{
@@ -227,11 +242,13 @@ function OnCardClick(
   setHighScore,
   setGameOver,
   gameDifficulty,
+  setGameWin,
 ) {
+  const difficulty = gameDifficulty.difficulty;
+
   if (pokemonList[index].isPicked === true) {
-    setScore(0);
     setGameOver(true);
-    const difficulty = gameDifficulty.difficulty;
+
     if (score > highScore[difficulty]) {
       setHighScore((prev) => ({
         ...prev,
@@ -241,9 +258,19 @@ function OnCardClick(
     return;
   }
 
-  setScore((prevScore) => prevScore + 1);
+  const newScore = score + 1;
+  setScore(newScore);
+  console.log(pokemonList);
 
-  if (score === pokemonList.length) {
+  if (newScore === pokemonList.length) {
+    if (newScore > highScore[difficulty]) {
+      setHighScore((prev) => ({
+        ...prev,
+        [difficulty]: newScore,
+      }));
+    }
+    setGameWin(true);
+    return;
   }
 
   let shuffled = [...pokemonList];
@@ -254,16 +281,36 @@ function OnCardClick(
     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
   }
 
-  console.log(shuffled);
   setPokemonList(shuffled);
 }
 
-function RenderLostGame({ setModalIsOpen }) {
+function RenderLostGame({ setModalIsOpen, score, setScore }) {
+  const restartGame = () => {
+    setModalIsOpen(true);
+    setScore(0);
+  };
   return (
     <div className="game-over">
       <h3>Game Over</h3>
+      <h4>Final Score is: {score}</h4>
       <h4>Restart Game?</h4>
-      <button className="reset-game" onClick={() => setModalIsOpen(true)}>
+      <button className="reset-game" onClick={restartGame}>
+        Restart
+      </button>
+    </div>
+  );
+}
+
+function RenderWinGame({ setModalIsOpen }) {
+  const restartGame = () => {
+    setModalIsOpen(true);
+    setScore(0);
+  };
+  return (
+    <div className="game-win">
+      <h3>Game Won!</h3>
+      <h4>Restart Game?</h4>
+      <button className="reset-game" onClick={restartGame}>
         Restart
       </button>
     </div>

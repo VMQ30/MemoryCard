@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 
 async function FetchData(limit) {
+  const randomOffset = Math.floor(Math.random() * 500);
   try {
     const response = await fetch(
-      `https://pokeapi.co/api/v2/pokemon/?limit=${limit}&offset=20`,
+      `https://pokeapi.co/api/v2/pokemon/?limit=${limit}&offset=${randomOffset}`,
     );
     let data = await response.json();
     data = data.results;

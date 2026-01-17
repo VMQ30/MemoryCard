@@ -303,6 +303,7 @@ img {
   height: 20vw;
   animation: loading 1s infinite;
   transform-origin: center;
+  animation: loading 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
 }
 
 @keyframes loading {
@@ -312,8 +313,4 @@ img {
   100% {
     transform: rotate(360deg);
   }
-}
-
-.loader {
-  animation: loading 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
 }

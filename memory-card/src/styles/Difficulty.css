@@ -1,5 +1,6 @@
 .difficulty-selector,
-.game-over {
+.game-over,
+.game-win {
   background-color: white;
   border: 40px solid transparent;
   border-image-source: url("../assets/dialog-box.png");
@@ -29,7 +30,8 @@ h3 {
 }
 
 label,
-.game-over h4 {
+.game-over h4,
+.game-win h4 {
   font-family: "GameFont";
   font-size: 1.2rem;
   cursor: url(../assets/cursor.png), pointer;
@@ -88,7 +90,9 @@ label,
   border-radius: inherit;
   transform: translate3d(0, 0.75em, -1em);
   z-index: 0;
-  box-shadow: 0 0 0 1.7px #500303, 0 10px 0 #ee5d5d42;
+  box-shadow:
+    0 0 0 1.7px #500303,
+    0 10px 0 #ee5d5d42;
   transition: 0.3s ease;
 }
 
@@ -107,7 +111,9 @@ label,
 
 .start-game:active::before,
 .reset-game:active::before {
-  box-shadow: 0 0 0 2px #b18597, 0 0 #ffe3e2;
+  box-shadow:
+    0 0 0 2px #b18597,
+    0 0 #ffe3e2;
   transform: translate3d(0, 0, -1em);
   outline: none;
 }

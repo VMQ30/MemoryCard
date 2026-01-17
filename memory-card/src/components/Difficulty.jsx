@@ -7,6 +7,11 @@ export function Difficulty({
   modalIsOpen,
   setModalIsOpen,
 }) {
+  const startGame = () => {
+    if (gameDifficulty) {
+      setModalIsOpen(false);
+    }
+  };
   return (
     <>
       {modalIsOpen && (
@@ -50,7 +55,7 @@ export function Difficulty({
               <span className="choice-indicator">▶</span>Hard
             </label>
           </div>
-          <button className="start-game" onClick={() => setModalIsOpen(false)}>
+          <button className="start-game" onClick={startGame}>
             Start Game
           </button>
         </div>
