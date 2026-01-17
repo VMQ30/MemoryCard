@@ -7,7 +7,6 @@
   padding: 40px;
   max-width: none;
   min-height: 100vh;
-  width: 100%;
   margin: 0;
   box-sizing: border-box;
 }
@@ -282,6 +281,7 @@ img {
   background-color: white;
   background-color: white;
   border: 40px solid transparent;
+  border-width: clamp(30px, 5vw, 40px);
   border-image-source: url("../assets/dialog-box.png");
   border-image-slice: 100 fill;
   border-image-repeat: stretch;
@@ -289,7 +289,7 @@ img {
   font-family: "GameFont";
   display: flex;
   justify-content: space-evenly;
-  padding: 0 40px;
+  padding: 0 clamp(10px, 5vw, 40px);
 }
 
 .high-score {
@@ -312,5 +312,13 @@ img {
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 1200px) {
+  .cards-wrapper {
+    box-sizing: border-box;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    padding: 10px;
   }
 }

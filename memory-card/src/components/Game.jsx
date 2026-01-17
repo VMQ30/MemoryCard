@@ -34,7 +34,9 @@ export function Game({
   }
 
   if (gameWin) {
-    return <RenderWinGame setModalIsOpen={setModalIsOpen} />;
+    return (
+      <RenderWinGame setModalIsOpen={setModalIsOpen} setScore={setScore} />
+    );
   }
   return (
     <main className="main-game">
@@ -301,7 +303,7 @@ function RenderLostGame({ setModalIsOpen, score, setScore }) {
   );
 }
 
-function RenderWinGame({ setModalIsOpen }) {
+function RenderWinGame({ setModalIsOpen, setScore }) {
   const restartGame = () => {
     setModalIsOpen(true);
     setScore(0);

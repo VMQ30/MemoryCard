@@ -54,12 +54,5 @@
 }
 
 body {
-  background-image: url("./assets/sunny-bg.jpg");
-  background-size: cover;
-  background-position: bottom;
-  background-attachment: fixed;
-}
-
-body {
   cursor: url("./assets/cursor-pointer.png"), auto;
 }
