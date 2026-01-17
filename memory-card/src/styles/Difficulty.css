@@ -1,8 +1,9 @@
-.difficulty-selector {
+.difficulty-selector,
+.game-over {
   background-color: white;
   border: 40px solid transparent;
   border-image-source: url("../assets/dialog-box.png");
-  border-image-slice: 200 fill;
+  border-image-slice: 100 fill;
   border-image-repeat: stretch;
   display: flex;
   flex-direction: column;
@@ -27,7 +28,8 @@ h3 {
   text-transform: uppercase;
 }
 
-label {
+label,
+.game-over h4 {
   font-family: "GameFont";
   font-size: 1.2rem;
   cursor: url(../assets/cursor.png), pointer;
@@ -59,7 +61,8 @@ label {
   }
 }
 
-.start-game {
+.start-game,
+.reset-game {
   position: relative;
   font-family: "GameFont";
   width: 50%;
@@ -73,7 +76,8 @@ label {
   cursor: url(../assets/cursor.png), pointer;
 }
 
-.start-game::before {
+.start-game::before,
+.reset-game::before {
   position: absolute;
   content: "";
   top: 0;
@@ -88,18 +92,21 @@ label {
   transition: 0.3s ease;
 }
 
-.start-game:hover {
+.start-game:hover,
+.reset-game:hover {
   background-color: #ed4646;
   outline: none;
   border-color: #500303;
 }
 
-.start-game:active {
+.start-game:active,
+.reset-game:active {
   background-color: #f68d8d;
   transform: translate(0, 0.75em);
 }
 
-.start-game:active::before {
+.start-game:active::before,
+.reset-game:active::before {
   box-shadow: 0 0 0 2px #b18597, 0 0 #ffe3e2;
   transform: translate3d(0, 0, -1em);
   outline: none;

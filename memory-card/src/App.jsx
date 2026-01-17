@@ -11,6 +11,7 @@ function App() {
   ];
   const [gameDifficulty, setGameDifficulty] = useState(gameInfo[0]);
   const [modalIsOpen, setModalIsOpen] = useState(true);
+  const [highScore, setHighScore] = useState(0);
   return (
     <main>
       <Difficulty
@@ -21,7 +22,14 @@ function App() {
         setModalIsOpen={setModalIsOpen}
       />
 
-      {!modalIsOpen && <Game gameDifficulty={gameDifficulty} />}
+      {!modalIsOpen && (
+        <Game
+          gameDifficulty={gameDifficulty}
+          setModalIsOpen={setModalIsOpen}
+          highScore={highScore}
+          setHighScore={setHighScore}
+        />
+      )}
     </main>
   );
 }

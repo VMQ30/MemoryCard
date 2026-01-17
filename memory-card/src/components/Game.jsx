@@ -5,13 +5,17 @@ import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { GetPokemonData } from "./Pokemon";
 import { useState } from "react";
 
-export function Game({ gameDifficulty }) {
+export function Game({
+  gameDifficulty,
+  setModalIsOpen,
+  highScore,
+  setHighScore,
+}) {
   const [score, setScore] = useState(0);
-  const [highScore, setHighScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
 
   if (gameOver) {
-    return <RenderLostGame />;
+    return <RenderLostGame setModalIsOpen={setModalIsOpen} />;
   }
 
   return (
@@ -220,6 +224,11 @@ function OnCardClick(
     }
   }
 
+  setScore((prevScore) => prevScore + 1);
+
+  if (score === pokemonList.length) {
+  }
+
   let shuffled = [...pokemonList];
   shuffled[index] = { ...shuffled[index], isPicked: true };
 
@@ -228,12 +237,18 @@ function OnCardClick(
     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
   }
 
-  setScore((prevScore) => prevScore + 1);
-
   console.log(shuffled);
   setPokemonList(shuffled);
 }
 
-function RenderLostGame() {
-  return <div className="game-over"></div>;
+function RenderLostGame({ setModalIsOpen }) {
+  return (
+    <div className="game-over">
+      <h3>Game Over</h3>
+      <h4>Restart Game?</h4>
+      <button className="reset-game" onClick={() => setModalIsOpen(true)}>
+        Restart
+      </button>
+    </div>
+  );
 }
