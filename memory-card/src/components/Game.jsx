@@ -3,8 +3,17 @@ import "../styles/Game.css";
 import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 
 import { GetPokemonData } from "./Pokemon";
+import { useState } from "react";
 
 export function Game({ gameDifficulty }) {
+  const [score, setScore] = useState(0);
+  const [highScore, setHighScore] = useState(0);
+  const [gameOver, setGameOver] = useState(false);
+
+  if (gameOver) {
+    return <RenderLostGame />;
+  }
+
   return (
     <main className="main-game">
       <div className="header">
@@ -39,19 +48,33 @@ export function Game({ gameDifficulty }) {
 
       <div className="game-cards">
         <div className="cards-wrapper">
-          <GetPokemonDetails limit={gameDifficulty.numOfCards} />
+          <GetPokemonDetails
+            limit={gameDifficulty.numOfCards}
+            score={score}
+            setScore={setScore}
+            highScore={highScore}
+            setHighScore={setHighScore}
+            setGameOver={setGameOver}
+          />
         </div>
       </div>
       <div className="game-info">
-        <h4>Score: </h4>
-        <h4 className="high-score">High Score: </h4>
+        <h4>Score: {score}</h4>
+        <h4 className="high-score">High Score: {highScore}</h4>
       </div>
     </main>
   );
 }
 
-function GetPokemonDetails({ limit }) {
-  const { pokemonList, loading } = GetPokemonData(limit);
+function GetPokemonDetails({
+  limit,
+  score,
+  setScore,
+  highScore,
+  setHighScore,
+  setGameOver,
+}) {
+  const { pokemonList, loading, setPokemonList } = GetPokemonData(limit);
 
   if (loading) {
     return <h1>Loading...</h1>;
@@ -60,18 +83,38 @@ function GetPokemonDetails({ limit }) {
   const pokemonInfoCards = pokemonList.map((pokemon) => {
     return { ...pokemon, isPicked: false };
   });
-  console.log(pokemonInfoCards);
 
   return (
     <>
-      {pokemonInfoCards.map((pokemon) => (
-        <RenderPokemonCard key={pokemon.id} pokemonInfoCards={pokemon} />
+      {pokemonInfoCards.map((pokemon, index) => (
+        <RenderPokemonCard
+          key={pokemon.id}
+          index={index}
+          pokemonInfoCards={pokemon}
+          pokemonList={pokemonList}
+          setPokemonList={setPokemonList}
+          score={score}
+          setScore={setScore}
+          highScore={highScore}
+          setHighScore={setHighScore}
+          setGameOver={setGameOver}
+        />
       ))}
     </>
   );
 }
 
-function RenderPokemonCard({ pokemonInfoCards }) {
+function RenderPokemonCard({
+  index,
+  pokemonInfoCards,
+  pokemonList,
+  setPokemonList,
+  score,
+  setScore,
+  highScore,
+  setHighScore,
+  setGameOver,
+}) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
@@ -107,6 +150,18 @@ function RenderPokemonCard({ pokemonInfoCards }) {
       className="cards"
       onMouseLeave={handleMouseLeave}
       onMouseMove={handleHoverMouse}
+      onClick={() => {
+        OnCardClick(
+          pokemonList,
+          setPokemonList,
+          index,
+          score,
+          setScore,
+          highScore,
+          setHighScore,
+          setGameOver
+        );
+      }}
       style={{
         rotateX,
         rotateY,
@@ -145,4 +200,40 @@ function RenderPokemonCard({ pokemonInfoCards }) {
       </div>
     </motion.div>
   );
+}
+
+function OnCardClick(
+  pokemonList,
+  setPokemonList,
+  index,
+  score,
+  setScore,
+  highScore,
+  setHighScore,
+  setGameOver
+) {
+  if (pokemonList[index].isPicked === true) {
+    setScore(0);
+    setGameOver(true);
+    if (highScore < score) {
+      setHighScore(score);
+    }
+  }
+
+  let shuffled = [...pokemonList];
+  shuffled[index] = { ...shuffled[index], isPicked: true };
+
+  for (let i = 0, n = pokemonList.length; i < n; i++) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+
+  setScore((prevScore) => prevScore + 1);
+
+  console.log(shuffled);
+  setPokemonList(shuffled);
+}
+
+function RenderLostGame() {
+  return <div className="game-over"></div>;
 }

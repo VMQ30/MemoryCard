@@ -51,5 +51,5 @@ export function GetPokemonData(limit) {
     };
   }, [limit]);
 
-  return { pokemonList, loading };
+  return { pokemonList, loading, setPokemonList };
 }
