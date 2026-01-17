@@ -1,4 +1,5 @@
 import "../styles/Game.css";
+import loader from "../assets/loader.png";
 
 import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 
@@ -13,6 +14,13 @@ export function Game({
 }) {
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
+  const { pokemonList, loading, setPokemonList } = GetPokemonData(
+    gameDifficulty.numOfCards,
+  );
+
+  if (loading) {
+    return <RenderLoading />;
+  }
 
   if (gameOver) {
     return <RenderLostGame setModalIsOpen={setModalIsOpen} />;
@@ -53,13 +61,14 @@ export function Game({
       <div className="game-cards">
         <div className="cards-wrapper">
           <GetPokemonDetails
-            limit={gameDifficulty.numOfCards}
             score={score}
             setScore={setScore}
             highScore={highScore}
             setHighScore={setHighScore}
             setGameOver={setGameOver}
             gameDifficulty={gameDifficulty}
+            pokemonList={pokemonList}
+            setPokemonList={setPokemonList}
           />
         </div>
       </div>
@@ -74,20 +83,15 @@ export function Game({
 }
 
 function GetPokemonDetails({
-  limit,
   score,
   setScore,
   highScore,
   setHighScore,
   setGameOver,
   gameDifficulty,
+  pokemonList,
+  setPokemonList,
 }) {
-  const { pokemonList, loading, setPokemonList } = GetPokemonData(limit);
-
-  if (loading) {
-    return <h1>Loading...</h1>;
-  }
-
   const pokemonInfoCards = pokemonList.map((pokemon) => {
     return { ...pokemon, isPicked: false };
   });
@@ -170,7 +174,7 @@ function RenderPokemonCard({
           highScore,
           setHighScore,
           setGameOver,
-          gameDifficulty
+          gameDifficulty,
         );
       }}
       style={{
@@ -203,7 +207,7 @@ function RenderPokemonCard({
             <p>
               {pokemonInfoCards.speciesInfo.flavor_text_entries[4].flavor_text.replace(
                 /[\f\n\r]/gm,
-                " "
+                " ",
               )}
             </p>
           </div>
@@ -222,7 +226,7 @@ function OnCardClick(
   highScore,
   setHighScore,
   setGameOver,
-  gameDifficulty
+  gameDifficulty,
 ) {
   if (pokemonList[index].isPicked === true) {
     setScore(0);
@@ -262,6 +266,14 @@ function RenderLostGame({ setModalIsOpen }) {
       <button className="reset-game" onClick={() => setModalIsOpen(true)}>
         Restart
       </button>
+    </div>
+  );
+}
+
+function RenderLoading() {
+  return (
+    <div className="loading">
+      <img className="loader" src={loader} />
     </div>
   );
 }

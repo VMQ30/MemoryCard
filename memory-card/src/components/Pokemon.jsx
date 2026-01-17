@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 async function FetchData(limit) {
   try {
     const response = await fetch(
-      `https://pokeapi.co/api/v2/pokemon/?limit=${limit}&offset=20`
+      `https://pokeapi.co/api/v2/pokemon/?limit=${limit}&offset=20`,
     );
     let data = await response.json();
     data = data.results;
@@ -34,10 +34,6 @@ export function GetPokemonData(limit) {
   useEffect(() => {
     let isMounted = true;
     setLoading(true);
-
-    if (loading) {
-      <RenderLoading />;
-    }
 
     FetchData(limit).then((data) => {
       if (isMounted) {
