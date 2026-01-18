@@ -1,4 +1,6 @@
 import "../styles/Game.css";
+
+import backCard from "../assets/back.png";
 import loader from "../assets/loader.png";
 
 import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
@@ -15,6 +17,8 @@ export function Game({
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
   const [gameWin, setGameWin] = useState(false);
+  const [isFlipped, setIsFlipped] = useState(false);
+
   const { pokemonList, loading, setPokemonList } = GetPokemonData(
     gameDifficulty.numOfCards,
   );
@@ -82,6 +86,8 @@ export function Game({
             pokemonList={pokemonList}
             setPokemonList={setPokemonList}
             setGameWin={setGameWin}
+            isFlipped={isFlipped}
+            setIsFlipped={setIsFlipped}
           />
         </div>
       </div>
@@ -105,6 +111,8 @@ function GetPokemonDetails({
   pokemonList,
   setPokemonList,
   setGameWin,
+  isFlipped,
+  setIsFlipped,
 }) {
   const pokemonInfoCards = pokemonList.map((pokemon) => {
     return { ...pokemon, isPicked: false };
@@ -126,6 +134,8 @@ function GetPokemonDetails({
           setGameOver={setGameOver}
           gameDifficulty={gameDifficulty}
           setGameWin={setGameWin}
+          isFlipped={isFlipped}
+          setIsFlipped={setIsFlipped}
         />
       ))}
     </>
@@ -144,6 +154,8 @@ function RenderPokemonCard({
   setGameOver,
   gameDifficulty,
   setGameWin,
+  isFlipped,
+  setIsFlipped,
 }) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -151,8 +163,8 @@ function RenderPokemonCard({
   const mouseXSpring = useSpring(x);
   const mouseYSpring = useSpring(y);
 
-  const rotateX = useTransform(mouseYSpring, [-100, 100], [8, -8]);
-  const rotateY = useTransform(mouseXSpring, [-100, 100], [-8, 8]);
+  const rotateX = useTransform(mouseYSpring, [-100, 100], [10, -10]);
+  const rotateY = useTransform(mouseXSpring, [-100, 100], [-10, 10]);
 
   function handleHoverMouse(event) {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -175,61 +187,90 @@ function RenderPokemonCard({
     y.set(0);
   }
 
+  function handleClickCard() {
+    if (isFlipped) return;
+
+    setIsFlipped(true);
+    setTimeout(() => {
+      OnCardClick(
+        pokemonList,
+        setPokemonList,
+        index,
+        score,
+        setScore,
+        highScore,
+        setHighScore,
+        setGameOver,
+        gameDifficulty,
+        setGameWin,
+      );
+      setTimeout(() => {
+        setIsFlipped(false);
+      }, 400);
+    }, 800);
+  }
+
   return (
     <motion.div
       className="cards"
       onMouseLeave={handleMouseLeave}
       onMouseMove={handleHoverMouse}
-      onClick={() => {
-        OnCardClick(
-          pokemonList,
-          setPokemonList,
-          index,
-          score,
-          setScore,
-          highScore,
-          setHighScore,
-          setGameOver,
-          gameDifficulty,
-          setGameWin,
-        );
-      }}
+      onClick={handleClickCard}
       style={{
         rotateX,
         rotateY,
         "--tilt-x": rotateX,
         "--tilt-y": rotateY,
+        transformStyle: "preserve-3d",
+        perspective: 1000,
       }}
     >
-      <div className="gold-layer" />
-      <div
-        className="cards-info"
-        data-type={pokemonInfoCards.types[0].type.name}
+      <motion.div
+        className="card-inner"
+        initial={false}
+        animate={{ rotateY: isFlipped ? 180 : 0 }}
+        transition={{
+          type: "tween",
+          ease: "easeInOut",
+          duration: 0.4,
+        }}
+        style={{ transformStyle: "preserve-3d", height: "100%", width: "100%" }}
       >
-        <div className="holo-lines" />
-        <div className="holo-layer" />
-        <div className="cards-header">
-          <h4 className="name">{pokemonInfoCards.name}</h4>
-          <h4>HP:{pokemonInfoCards.stats[0].base_stat}</h4>
-        </div>
+        <div className="card-front">
+          <div className="gold-layer" />
+          <div
+            className="cards-info"
+            data-type={pokemonInfoCards.types[0].type.name}
+          >
+            <div className="holo-lines" />
+            <div className="holo-layer" />
+            <div className="cards-header">
+              <h4 className="name">{pokemonInfoCards.name}</h4>
+              <h4>HP:{pokemonInfoCards.stats[0].base_stat}</h4>
+            </div>
 
-        <div className="card-body">
-          <img src={pokemonInfoCards.sprites.front_default} />
-          <div className="type">
-            <h4>{pokemonInfoCards.types[0].type.name} Pokemon</h4>
-            <h4>Height: {pokemonInfoCards.height}</h4>
-            <h4>Weight: {pokemonInfoCards.weight}</h4>
-          </div>
-          <div className="description">
-            <p>
-              {pokemonInfoCards.speciesInfo.flavor_text_entries[4].flavor_text.replace(
-                /[\f\n\r]/gm,
-                " ",
-              )}
-            </p>
+            <div className="card-body">
+              <img src={pokemonInfoCards.sprites.front_default} />
+              <div className="type">
+                <h4>{pokemonInfoCards.types[0].type.name} Pokemon</h4>
+                <h4>Height: {pokemonInfoCards.height}</h4>
+                <h4>Weight: {pokemonInfoCards.weight}</h4>
+              </div>
+              <div className="description">
+                <p>
+                  {pokemonInfoCards.speciesInfo.flavor_text_entries[4].flavor_text.replace(
+                    /[\f\n\r]/gm,
+                    " ",
+                  )}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+        <div className="card-back">
+          <img className="back-image" src={backCard} />
+        </div>
+      </motion.div>
     </motion.div>
   );
 }

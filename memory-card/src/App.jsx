@@ -1,4 +1,5 @@
 import "./App.css";
+
 import { useState } from "react";
 import { Difficulty } from "./components/Difficulty.jsx";
 import { Game } from "./components/Game.jsx";
@@ -12,6 +13,7 @@ function App() {
   const [gameDifficulty, setGameDifficulty] = useState(gameInfo[0]);
   const [modalIsOpen, setModalIsOpen] = useState(true);
   const [highScore, setHighScore] = useState({ Easy: 0, Medium: 0, Hard: 0 });
+
   return (
     <main>
       <Difficulty
