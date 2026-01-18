@@ -169,7 +169,7 @@ function RenderPokemonCard({
   const rotateX = useTransform(mouseYSpring, [-100, 100], [10, -10]);
   const rotateY = useTransform(mouseXSpring, [-100, 100], [-10, 10]);
 
-  const [playFlip] = useSound(flipSfx, 0.5);
+  const [playFlip] = useSound(flipSfx, 0.9);
 
   function handleHoverMouse(event) {
     const rect = event.currentTarget.getBoundingClientRect();
