@@ -66,7 +66,8 @@ label,
 }
 
 .start-game,
-.reset-game {
+.reset-game,
+.toggleMusic {
   position: relative;
   font-family: "GameFont";
   width: 50%;
@@ -81,7 +82,8 @@ label,
 }
 
 .start-game::before,
-.reset-game::before {
+.reset-game::before,
+.toggleMusic::before {
   position: absolute;
   content: "";
   top: 0;
@@ -99,20 +101,23 @@ label,
 }
 
 .start-game:hover,
-.reset-game:hover {
+.reset-game:hover,
+.toggleMusic:hover {
   background-color: #ed4646;
   outline: none;
   border-color: #500303;
 }
 
 .start-game:active,
-.reset-game:active {
+.reset-game:active,
+.toggleMusic:active {
   background-color: #f68d8d;
   transform: translate(0, 0.75em);
 }
 
 .start-game:active::before,
-.reset-game:active::before {
+.reset-game:active::before,
+.toggleMusic:active::before {
   box-shadow:
     0 0 0 2px #b18597,
     0 0 #ffe3e2;

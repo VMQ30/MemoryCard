@@ -1,6 +1,4 @@
 import "../styles/Difficulty.css";
-import music from "../assets/music.mp3";
-import useSound from "use-sound";
 
 export function Difficulty({
   gameInfo,
@@ -9,12 +7,9 @@ export function Difficulty({
   modalIsOpen,
   setModalIsOpen,
 }) {
-  const [play, { stop }] = useSound(music, { volume: 0.3, loop: true });
-
   const startGame = () => {
     if (gameDifficulty) {
       setModalIsOpen(false);
-      play();
     }
   };
   return (
