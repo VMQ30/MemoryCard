@@ -1,4 +1,6 @@
 import "../styles/Difficulty.css";
+import sfx from "../assets/click.mp3";
+import useSound from "use-sound";
 
 export function Difficulty({
   gameInfo,
@@ -8,10 +10,14 @@ export function Difficulty({
   setModalIsOpen,
 }) {
   const startGame = () => {
+    playClick();
     if (gameDifficulty) {
       setModalIsOpen(false);
     }
   };
+
+  const [playClick] = useSound(sfx, { volume: 0.5 });
+
   return (
     <>
       {modalIsOpen && (
@@ -26,7 +32,10 @@ export function Difficulty({
                 name="difficulty"
                 value="easy"
                 checked={gameDifficulty.difficulty === "Easy"}
-                onChange={() => setGameDifficulty(gameInfo[0])}
+                onChange={() => {
+                  playClick();
+                  setGameDifficulty(gameInfo[0]);
+                }}
               />
               <span className="choice-indicator">▶</span>Easy
             </label>
@@ -38,7 +47,10 @@ export function Difficulty({
                 name="difficulty"
                 value="medium"
                 checked={gameDifficulty.difficulty === "Medium"}
-                onChange={() => setGameDifficulty(gameInfo[1])}
+                onChange={() => {
+                  playClick();
+                  setGameDifficulty(gameInfo[1]);
+                }}
               />
               <span className="choice-indicator">▶</span>Medium
             </label>
@@ -50,7 +62,10 @@ export function Difficulty({
                 name="difficulty"
                 value="hard"
                 checked={gameDifficulty.difficulty === "Hard"}
-                onChange={() => setGameDifficulty(gameInfo[2])}
+                onChange={() => {
+                  playClick();
+                  setGameDifficulty(gameInfo[2]);
+                }}
               />
               <span className="choice-indicator">▶</span>Hard
             </label>

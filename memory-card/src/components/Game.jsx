@@ -2,6 +2,9 @@ import "../styles/Game.css";
 
 import backCard from "../assets/back.png";
 import loader from "../assets/loader.png";
+import flipSfx from "../assets/flip.mp3";
+import sfx from "../assets/click.mp3";
+import useSound from "use-sound";
 
 import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 
@@ -23,7 +26,7 @@ export function Game({
     gameDifficulty.numOfCards,
   );
 
-  if (loading) {
+  if (loading || !pokemonList) {
     return <RenderLoading />;
   }
 
@@ -166,6 +169,8 @@ function RenderPokemonCard({
   const rotateX = useTransform(mouseYSpring, [-100, 100], [10, -10]);
   const rotateY = useTransform(mouseXSpring, [-100, 100], [-10, 10]);
 
+  const [playFlip] = useSound(flipSfx, 0.5);
+
   function handleHoverMouse(event) {
     const rect = event.currentTarget.getBoundingClientRect();
 
@@ -189,6 +194,8 @@ function RenderPokemonCard({
 
   function handleClickCard() {
     if (isFlipped) return;
+
+    playFlip();
 
     setIsFlipped(true);
     setTimeout(() => {
@@ -328,7 +335,9 @@ function OnCardClick(
 }
 
 function RenderLostGame({ setModalIsOpen, score, setScore }) {
+  const [playClick] = useSound(sfx, { volume: 0.5 });
   const restartGame = () => {
+    playClick();
     setModalIsOpen(true);
     setScore(0);
   };
@@ -345,7 +354,9 @@ function RenderLostGame({ setModalIsOpen, score, setScore }) {
 }
 
 function RenderWinGame({ setModalIsOpen, setScore }) {
+  const [playClick] = useSound(sfx, { volume: 0.5 });
   const restartGame = () => {
+    playClick();
     setModalIsOpen(true);
     setScore(0);
   };
